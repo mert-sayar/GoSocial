@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/mert-sayar/GoSocial/internal/db"
 	"github.com/mert-sayar/GoSocial/internal/env"
 	"github.com/mert-sayar/GoSocial/internal/store"
@@ -38,6 +40,9 @@ func main() {
 		},
 
 		env: env.GetString("ENV", "development"),
+		mail: mailConfig{
+			exp: time.Hour * 24 * 3, // 3 days
+		},
 	}
 
 	// Logger
