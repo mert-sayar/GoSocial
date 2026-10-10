@@ -21,7 +21,7 @@ type Post struct {
 	User      User      `json:"user"`
 }
 
-// Why we didnt just write commentcount on the Post struct above BECAUSE is Single Responsibility! Post struct is same with our database posts table. We might not need CommentCount on Post struct
+// Why we didn't just write commentcount on the Post struct above BECAUSE is Single Responsibility! Post struct is same with our database posts table. We might not need CommentCount on Post struct
 type PostWithMetadata struct {
 	Post
 	CommentCount int `json:"comments_count"`
@@ -78,6 +78,10 @@ func (s *PostsStore) GetUserFeed(ctx context.Context, userID int64, fq Paginated
 		}
 
 		feed = append(feed, p)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return feed, nil
