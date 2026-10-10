@@ -30,6 +30,10 @@ type password struct {
 	hash []byte
 }
 
+func (p *password) Compare(payloadPassword string) error {
+	return bcrypt.CompareHashAndPassword(p.hash, []byte(payloadPassword))
+}
+
 func (p *password) Set(text string) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(text), bcrypt.DefaultCost)
 	if err != nil {
