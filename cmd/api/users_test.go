@@ -37,7 +37,8 @@ func TestGetUser(t *testing.T) {
 	t.Run("should allow authenticated requests", func(t *testing.T) {
 		mockCacheStore := app.cacheStorage.Users.(*cache.MockUserStore)
 
-		mockCacheStore.On("Get", int64(1)).Return(nil, nil).Twice()
+		mockCacheStore.On("Get", int64(42)).Return(nil, nil)
+		mockCacheStore.On("Get", int64(1)).Return(nil, nil)
 		mockCacheStore.On("Set", mock.Anything).Return(nil)
 
 		req, err := http.NewRequest(http.MethodGet, "/v1/users/1", nil)
@@ -59,7 +60,7 @@ func TestGetUser(t *testing.T) {
 
 		mockCacheStore.On("Get", int64(42)).Return(nil, nil)
 		mockCacheStore.On("Get", int64(1)).Return(nil, nil)
-		mockCacheStore.On("Set", mock.Anything, mock.Anything).Return(nil)
+		mockCacheStore.On("Set", mock.Anything).Return(nil)
 
 		req, err := http.NewRequest(http.MethodGet, "/v1/users/1", nil)
 		if err != nil {
