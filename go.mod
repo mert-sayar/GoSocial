@@ -7,12 +7,14 @@ require (
 	github.com/go-playground/validator/v10 v10.30.2
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/lib/pq v1.12.3
+	github.com/stretchr/testify v1.12.1
 	github.com/swaggo/http-swagger v1.3.4
 )
 
 require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/stretchr/objx v0.5.3 // indirect
 )
 
 require (
@@ -39,7 +41,7 @@ require (
 	github.com/swaggo/swag v1.16.6
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.28.0
-	go.yaml.in/yaml/v3 v3.0.4 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.53.0
 	golang.org/x/mod v0.37.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
