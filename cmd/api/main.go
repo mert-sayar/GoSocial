@@ -1,6 +1,8 @@
 package main
 
 import (
+	"expvar"
+	"runtime"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -34,6 +36,8 @@ const version = "0.0.1"
 // @name						Authorization
 // @description
 func main() {
+	startTime := time.Now()
+
 	cfg := config{
 		addr:        env.GetString("ADDR", ":8080"),
 		apiURL:      env.GetString("EXTERNAL_URL", "localhost:8080"),
@@ -123,6 +127,24 @@ func main() {
 		authenticator: jwtAuthenticator,
 		rateLimiter:   rateLimiter,
 	}
+
+	// Metrics collected
+	expvar.NewString("version").Set(version)
+	expvar.Publish("database", expvar.Func(func() any {
+		return db.Stats()
+	}))
+	expvar.Publish("goroutines", expvar.Func(func() any {
+		return runtime.NumGoroutine
+	}))
+	expvar.Publish("uptime", expvar.Func(func() any {
+		return time.Since(startTime).String()
+	}))
+	expvar.Publish("cache", expvar.Func(func() any {
+		if rdb == nil {
+			return "redis disabled"
+		}
+		return rdb.PoolStats()
+	}))
 
 	mux := app.mount()
 
