@@ -8,6 +8,7 @@ import (
 	"github.com/mert-sayar/GoSocial/internal/db"
 	"github.com/mert-sayar/GoSocial/internal/env"
 	"github.com/mert-sayar/GoSocial/internal/mailer"
+	"github.com/mert-sayar/GoSocial/internal/ratelimiter"
 	"github.com/mert-sayar/GoSocial/internal/store"
 	"github.com/mert-sayar/GoSocial/internal/store/cache"
 	"go.uber.org/zap"
@@ -68,6 +69,11 @@ func main() {
 				iss:    "gosocial",
 			},
 		},
+		rateLimiter: ratelimiter.Config{
+			RequestsPerTimeFrame: env.GetInt("RATELIMITER_REQUESTS_COUNT", 20),
+			TimeFrame:            time.Second * 5,
+			Enabled:              env.GetBool("RATE_LIMITER_ENABLED", true),
+		},
 	}
 
 	// Logger
@@ -95,6 +101,12 @@ func main() {
 		logger.Info("redis cache connection established")
 	}
 
+	// Rate limiter
+	rateLimiter := ratelimiter.NewFixedWindowLimiter(
+		cfg.rateLimiter.RequestsPerTimeFrame,
+		cfg.rateLimiter.TimeFrame,
+	)
+
 	store := store.NewStorage(db)
 	cacheStorage := cache.NewRedisStorage(rdb)
 
@@ -109,6 +121,7 @@ func main() {
 		logger:        logger,
 		mailer:        mailer,
 		authenticator: jwtAuthenticator,
+		rateLimiter:   rateLimiter,
 	}
 
 	mux := app.mount()

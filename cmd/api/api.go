@@ -15,6 +15,7 @@ import (
 	"github.com/mert-sayar/GoSocial/docs" // This is required to generate swagger docs
 	"github.com/mert-sayar/GoSocial/internal/auth"
 	"github.com/mert-sayar/GoSocial/internal/mailer"
+	"github.com/mert-sayar/GoSocial/internal/ratelimiter"
 	"github.com/mert-sayar/GoSocial/internal/store"
 	"github.com/mert-sayar/GoSocial/internal/store/cache"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -28,6 +29,7 @@ type application struct {
 	logger        *zap.SugaredLogger
 	mailer        mailer.Client
 	authenticator auth.Authenticator
+	rateLimiter   ratelimiter.Limiter
 }
 
 type config struct {
@@ -39,6 +41,7 @@ type config struct {
 	frontendURL string
 	auth        authConfig
 	redisCfg    redisConfig
+	rateLimiter ratelimiter.Config
 }
 
 type redisConfig struct {
@@ -89,9 +92,10 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
+	r.Use(app.RateLimiterMiddleware)
 
 	r.Route("/v1", func(r chi.Router) {
-		r.With(app.BasicAuthMiddleware()).Get("/health", app.healthCheckHandler)
+		r.Get("/health", app.healthCheckHandler)
 
 		docsURL := fmt.Sprintf("%s/swagger/doc.json", app.config.addr)
 		r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
