@@ -12,8 +12,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 	"github.com/mert-sayar/GoSocial/docs" // This is required to generate swagger docs
 	"github.com/mert-sayar/GoSocial/internal/auth"
+	"github.com/mert-sayar/GoSocial/internal/env"
 	"github.com/mert-sayar/GoSocial/internal/mailer"
 	"github.com/mert-sayar/GoSocial/internal/ratelimiter"
 	"github.com/mert-sayar/GoSocial/internal/store"
@@ -91,8 +93,17 @@ func (app *application) mount() http.Handler {
 	//r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	r.Use(middleware.Timeout(60 * time.Second))
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{env.GetString("CORS_ALLOWED_ORIGIN", "http://localhost:5174")},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
 	r.Use(app.RateLimiterMiddleware)
+	r.Use(middleware.Timeout(60 * time.Second))
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
