@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/mert-sayar/GoSocial/compare/v1.0.0...v1.0.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* **ci:** fix bot author name and email ([2fc2cac](https://github.com/mert-sayar/GoSocial/commit/2fc2cac21ad503c139313d2d84d0c7cc1e65958e))
+* **ci:** fix regex pattern ([44ee53d](https://github.com/mert-sayar/GoSocial/commit/44ee53dfdfe5a3c774fc9370dc20b21c7d4cc3d2))
+* **ci:** fix update version extractor syntax ([ae59997](https://github.com/mert-sayar/GoSocial/commit/ae599978e9fa387d4124997efe00587a4d108acf))
+
 ## 1.0.0 (2026-10-12)
 
 
