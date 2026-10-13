@@ -6,7 +6,7 @@ import (
 )
 
 type FixedWindowRateLimiter struct {
-	sync.RWMutex
+	sync.Mutex
 	clients map[string]int
 	limit   int
 	window  time.Duration
@@ -21,22 +21,21 @@ func NewFixedWindowLimiter(limit int, window time.Duration) *FixedWindowRateLimi
 }
 
 func (rl *FixedWindowRateLimiter) Allow(ip string) (bool, time.Duration) {
-	rl.RLock()
+	rl.Lock()
+	defer rl.Unlock()
+
 	count, exists := rl.clients[ip]
-	rl.RUnlock()
 
-	if !exists || count < rl.limit {
-		rl.Lock()
-		if !exists {
-			go rl.resetCount(ip)
-		}
-
-		rl.clients[ip]++
-		rl.Unlock()
-		return true, 0
+	if count >= rl.limit {
+		return false, rl.window
 	}
 
-	return false, rl.window
+	if !exists {
+		go rl.resetCount(ip)
+	}
+
+	rl.clients[ip] = count + 1
+	return true, 0
 }
 
 func (rl *FixedWindowRateLimiter) resetCount(ip string) {
