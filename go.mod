@@ -4,6 +4,7 @@ go 1.26.2
 
 require (
 	github.com/go-chi/chi/v5 v5.3.0
+	github.com/go-chi/cors v1.2.2
 	github.com/go-playground/validator/v10 v10.30.2
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/lib/pq v1.12.3
@@ -14,7 +15,6 @@ require (
 require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/go-chi/cors v1.2.2 // indirect
 	github.com/stretchr/objx v0.5.3 // indirect
 )
 
