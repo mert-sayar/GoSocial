@@ -142,8 +142,15 @@ k6 run scripts/k6/k6_test.js
 
 ## Continuous Integration
 
-GitHub Actions verifies dependencies, builds the project, and runs `go vet`,
-`staticcheck`, and the test suite with the race detector.
+GitHub Actions verifies dependencies, builds the project, runs `go vet`,
+`staticcheck`, and executes the full test suite with the race detector.
+
+## Release Automation
+
+- Release Please automates changelog-based release preparation.
+- The API version is updated automatically from the latest changelog version.
+
+The project does not currently include automatic deployment to a cloud environment.
 
 ## API Documentation
 
