@@ -134,7 +134,7 @@ func main() {
 		return db.Stats()
 	}))
 	expvar.Publish("goroutines", expvar.Func(func() any {
-		return runtime.NumGoroutine
+		return runtime.NumGoroutine()
 	}))
 	expvar.Publish("uptime", expvar.Func(func() any {
 		return time.Since(startTime).String()
