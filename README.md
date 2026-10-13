@@ -182,3 +182,4 @@ docs/               Swagger documentation
 - Identified and fixed a TOCTOU race condition in the fixed-window rate limiter.
 - Added concurrent regression tests to reproduce and verify the fix.
 - Added k6 smoke and load tests to validate basic API behavior and request latency.
+- Fixed authenticated user attribution for feed and comment operations.

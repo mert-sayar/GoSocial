@@ -22,9 +22,10 @@ func (app *application) createCommentHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	user := getUserFromContext(r)
 	comment := &store.Comment{
 		PostID:  getPostFromCtx(r).ID,
-		UserID:  1,
+		UserID:  user.ID,
 		Content: payload.Content,
 	}
 
