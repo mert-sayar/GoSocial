@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/mert-sayar/GoSocial/compare/v1.0.1...v1.0.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* **api:** use authenticated user for feed and comments ([012990b](https://github.com/mert-sayar/GoSocial/commit/012990b230cde7bb27f320dc60150302dc32d1c7))
+* **ratelimiter:** resolve race condition in fixed window rate limiter and add concurrent test ([52e4f16](https://github.com/mert-sayar/GoSocial/commit/52e4f168cb9617b93fe12be7f36c1b2183773338))
+
 ## [1.0.1](https://github.com/mert-sayar/GoSocial/compare/v1.0.0...v1.0.1) (2026-10-12)
 
 

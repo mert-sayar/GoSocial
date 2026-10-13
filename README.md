@@ -152,6 +152,23 @@ GitHub Actions verifies dependencies, builds the project, runs `go vet`,
 
 The project does not currently include automatic deployment to a cloud environment.
 
+## Release Automation
+
+- Release Please automates changelog-based release preparation.
+- The API version is updated automatically from the latest changelog version.
+
+The project does not currently include automatic deployment to a cloud environment.
+
+## Security and DevSecOps
+
+The CI workflow also runs:
+
+- `govulncheck` to detect known vulnerabilities in Go dependencies
+- `gosec` to identify security issues in Go source code
+- Trivy to scan the Docker image for `HIGH` and `CRITICAL` vulnerabilities with available fixes
+
+The Docker image is built in CI from the project `Dockerfile` before the Trivy scan.
+
 ## API Documentation
 
 Swagger documentation is available in the `docs` directory.
@@ -190,3 +207,4 @@ docs/               Swagger documentation
 - Added concurrent regression tests to reproduce and verify the fix.
 - Added k6 smoke and load tests to validate basic API behavior and request latency.
 - Fixed authenticated user attribution for feed and comment operations.
+- Added `govulncheck`, `gosec`, and Trivy Docker image scanning to the CI workflow.
