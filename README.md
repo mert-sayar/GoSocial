@@ -99,6 +99,19 @@ Configure the required environment variables in `.envrc`. If direnv is not enabl
 source .envrc
 ```
 
+For a local setup, configure at least:
+
+```dotenv
+ADDR=:8080
+DB_ADDR=postgresql://<user>:<password>@localhost:5432/gosocial?sslmode=disable
+ENV=development
+REDIS_ENABLED=true
+SENDGRID_API_KEY=<sendgrid-api-key>
+FROM_EMAIL=<verified-sender-email>
+```
+
+`SENDGRID_API_KEY` and `FROM_EMAIL` are needed for email invitations and account activation. When Redis is enabled, `REDIS_ADDR`, `REDIS_PW`, and `REDIS_DB` can also be configured. Set `AUTH_TOKEN_SECRET`, `AUTH_BASIC_USER`, and `AUTH_BASIC_PASS` to non-default values outside local development, and do not commit real secrets.
+
 Then run the database migrations:
 
 ```bash
@@ -190,3 +203,4 @@ docs/               Swagger documentation
 - Added concurrent regression tests to reproduce and verify the fix.
 - Added k6 smoke and load tests to validate basic API behavior and request latency.
 - Fixed authenticated user attribution for feed and comment operations.
+- Implemented a custom client-IP extraction helper for the rate limiter to better handle trusted proxy/CDN deployments and keep request throttling grounded in the client address.
