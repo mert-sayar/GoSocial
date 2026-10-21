@@ -78,6 +78,7 @@ func main() {
 			TimeFrame:            time.Second * 5,
 			Enabled:              env.GetBool("RATE_LIMITER_ENABLED", true),
 		},
+		trustProxy: env.GetBool("TRUST_PROXY", false),
 	}
 
 	// Logger

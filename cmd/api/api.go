@@ -45,6 +45,7 @@ type config struct {
 	auth        authConfig
 	redisCfg    redisConfig
 	rateLimiter ratelimiter.Config
+	trustProxy  bool
 }
 
 type redisConfig struct {
